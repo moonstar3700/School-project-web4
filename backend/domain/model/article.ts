@@ -7,7 +7,7 @@ class Article {
     readonly content: string;
     readonly date_published: Date;
     readonly employees: Employee[];
-    relations: Relation;
+    relations: Relation[];
 
 }
 
