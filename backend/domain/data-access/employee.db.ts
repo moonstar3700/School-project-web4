@@ -8,6 +8,18 @@ const employees: Employee[] = [
     Employee.create(currentid++, "user3", "t", "test3@mail.com")
 ]
 
+let employeeslength:number = employees.length;
+
 const getAllEmployees = (): Employee[] => {return employees}; 
 
-export default {getAllEmployees}
+//############## TODO #################
+const getEmployeesWithEmailPass = ({email, password}: {email: string, password: string} ): Employee => {
+    return Employee.create(currentid++, "login", "t", "logintest@mail.com")
+}
+
+//############## TODO #################
+const createEmployee = ({name, password, email}: {name: string, password: string, email: string}): Employee => {
+    return Employee.create(currentid++, "new", "t", "newtest@mail.com")
+}
+
+export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee}

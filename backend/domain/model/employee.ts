@@ -34,10 +34,10 @@ class Employee {
         this.email = email;
     }
 
-    equals({ employee_id, name, password, email}): boolean {
-        if (this.employee_id === employee_id) {
+    equals({ email,  password}): boolean {
+        if (this.email === email && this.password === password) {
             return true;
-        }
+        } else return false;
     }
 
     static create(id, name, password, email){
