@@ -5,13 +5,21 @@ import { EmployeeType } from '../types';
 const getAllEmployees = (): Employee[] => EmployeeDB.getAllEmployees();
 
 const getEmployeesWithEmailPass = ({email, password}: {email: string, password: string} ): Employee => {
-    if (email !== null){
+    if (!email || !email.trim()){
         throw new Error('email is empty')
     }
 
     return EmployeeDB.getEmployeesWithEmailPass({email, password})
 }
 
-const createEmployee = ({name, password, email}: {name: string, password: string, email: string}): Employee => EmployeeDB.createEmployee({name, password, email})
+const createEmployee = ({name, password, email}: {name: string, password: string, email: string}): Employee => 
+{
+    if (!name || !name.trim()){
+        throw new Error('name is incorrect or empty')
+    }
+
+    return EmployeeDB.createEmployee({name, password, email})
+}
+
 
 export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee};
