@@ -5,7 +5,7 @@ import employeeService from '../service/employee.service'
 const employeeRouter = express.Router()
 
 // get all employees
-employeeRouter.get('/test', async (req: Request, res: Response) => {
+employeeRouter.get('/', async (req: Request, res: Response) => {
     try {
         const employees = await employeeService.getAllEmployees();
         res.status(200).json(employees);
@@ -37,8 +37,8 @@ employeeRouter.post('/add', async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({status: 'error', errorMessage: error.message});
     }
-    
-    
 })
+
+// add article
 
 export {employeeRouter};

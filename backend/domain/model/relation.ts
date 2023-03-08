@@ -20,7 +20,7 @@ class Relation {
         return false;
     }
 
-    static create({relation_id, subject_entity, object_entity, relation_type}){
+    static create(relation_id, subject_entity, object_entity, relation_type){
         return new Relation(relation_id, subject_entity, object_entity, relation_type);
     }
 
@@ -30,6 +30,15 @@ class Relation {
         this.relation_type = relation_type;
     }
 
+    public setType(relation_type: Relation_type): void{
+        this.relation_type = relation_type;
+    }
+
+    public adjust({subject_entity, object_entity, relation_type}){
+        this.subject_entity = subject_entity;
+        this.object_entity = object_entity;
+        this.relation_type = relation_type;
+    }
 }
 
 export {Relation}
