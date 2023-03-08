@@ -16,7 +16,7 @@ class Article {
         this.date_published = date_published;
     }
 
-    static create({article_id, title, content, date_published}){
+    static create(article_id, title, content, date_published){
         return new Article(article_id, title, content, date_published);
     }
 
