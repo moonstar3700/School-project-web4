@@ -10,3 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Relation_type{
+  type_id           Int     @id @default(autoincrement())
+  type_name         String
+  is_unique         Boolean
+  relation          Relation[]
+}
+
+model Relation{
+  relation_id       Int     @id @default(autoincrement())
+  subject_entity    String
+  object_entity     String
+  relation_type     Relation_type   @relation(fields: [relation_type_id], references: [type_id])
+  relation_type_id  Int
+  article           Article         @relation(fields: [article_id], references: [article_id])
+  article_id        Int
+}
+
+model Employee{
+  employee_id       Int     @id @default(autoincrement())
+  name              String
+  password          String
+  email             String
+  articles          Article[]
+}
+
+model Article{
+  article_id        Int     @id @default(autoincrement())
+  title             String
+  content           String
+  date_published    DateTime   @default(now())
+  employees         Employee[]
+  relations         Relation[]
+}
