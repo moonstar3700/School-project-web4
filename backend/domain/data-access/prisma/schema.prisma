@@ -44,4 +44,3 @@ model Article{
   relations         Relation[]
 }
 
-export default {Relation_type, Relation, Article, Employee}
