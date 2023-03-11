@@ -11,8 +11,8 @@ const findArticle = ({article_id}: {article_id: number}): Article => {
 }
 
 // create article
-const createArticle = ({constent, title, date}: {constent: string, title: string, date: Date}): Article => {
-    return articleDB.createArticle({constent, title, date});
+const createArticle = ({content, title}: {content: string, title: string}): Article => {
+    return articleDB.createArticle({content, title});
 }
 
 // delete article
@@ -23,6 +23,13 @@ const deleteArticle = ({article_id}: {article_id: number}): Article => {
     }
     return article;
 }
+// get all articles from employee met ID
 
-// add relationships
-// delete relations
+// add relationships function
+
+// delete relations function
+
+
+export default{getAllArticles, findArticle, createArticle, deleteArticle}
+
+

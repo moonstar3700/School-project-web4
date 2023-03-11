@@ -1,4 +1,8 @@
 import { Employee } from "../model/employee";
+import { Prisma, PrismaClient } from "@prisma/client";
+import { transcode } from "buffer";
+
+const database = new PrismaClient();
 
 let currentid = 0;
 
@@ -11,6 +15,17 @@ const employees: Employee[] = [
 let employeeslength:number = employees.length;
 
 const getAllEmployees = (): Employee[] => {return employees}; 
+
+/*const getAllEmployees = async (): Promise<Employee[]> => {
+    try {
+        const employeesPrisma = await database.employee.findMany();
+        console.log(employeesPrisma)
+        return 
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}*/
 
 //############## TODO #################
 const getEmployeesWithEmailPass = ({email, password}: {email: string, password: string} ): Employee => {

@@ -27,12 +27,15 @@ class Employee {
         return this.articles;
     }
 
-    constructor(id: number, name: string, password: string, email: string) {
+    constructor(id: number, name: string, password: string, email: string, articles: Article[]) {
         this.employee_id = id;
         this.name = name;
         this.password = password;
         this.email = email;
+        this.articles = articles;
     }
+
+    
 
     equals({ email,  password}): boolean {
         if (this.email === email && this.password === password) {
@@ -41,7 +44,7 @@ class Employee {
     }
 
     static create(id, name, password, email){
-        return new Employee(id, name, password, email);
+        return new Employee(id, name, password, email, null);
     }
     
 }

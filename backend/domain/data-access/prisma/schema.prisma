@@ -23,7 +23,7 @@ model Relation{
   object_entity     String
   relation_type     Relation_type   @relation(fields: [relation_type_id], references: [type_id])
   relation_type_id  Int
-  article           Article         @relation(fields: [article_id], references: [article_id])
+  article           Article        @relation(fields: [article_id], references: [article_id])
   article_id        Int
 }
 
@@ -43,3 +43,5 @@ model Article{
   employees         Employee[]
   relations         Relation[]
 }
+
+export default {Relation_type, Relation, Article, Employee}

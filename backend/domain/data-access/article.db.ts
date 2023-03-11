@@ -10,8 +10,8 @@ let articles: Article[] = [
 
 const getAllArticles = (): Article[] => {return articles};
 
-const createArticle = ({constent, title, date}: {constent: string, title: string, date: Date}): Article => {
-    const article = Article.create(currentID++, constent, title, date)
+const createArticle = ({content, title}: {content: string, title: string}): Article => {
+    const article = Article.create(currentID++, content, title, Date.now())
     articles.push(article);
     return article;
 }

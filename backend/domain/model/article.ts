@@ -6,7 +6,6 @@ class Article {
     readonly title: string;
     readonly content: string;
     readonly date_published: Date;
-    readonly employees: Employee[];
     relations: Relation[];
 
     constructor(article_id: number, title: string, content: string, date_published: Date){

@@ -4,7 +4,10 @@ import relation_typeDb from '../domain/data-access/relation_type.db';
 import { Relation } from "../domain/model/relation";
 
 
-const getAllRelations = (): Relation[] => relationDB.getAllRelations();
+//const getAllRelations = (): Relation[] => relationDB.getAllRelations();
+
+const getAllRelations = (): Promise<Relation[]> => relationDB.getAllRelations();
+
 
 // create relation
 const createRelation = ({subject_entity, object_entity, type_name, is_unique}: {subject_entity: string, object_entity: string, type_name: string, is_unique: boolean}): Relation => {
