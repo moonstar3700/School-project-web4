@@ -19,6 +19,10 @@ class Relation_type {
     static create(type_id ,type_name, is_unique){
         return new Relation_type(type_id, type_name, is_unique);
     }
+
+    get get_id(){
+        return this.type_id
+    }
 }
 
 export {Relation_type}

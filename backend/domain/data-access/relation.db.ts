@@ -14,9 +14,7 @@ let relations: Relation[] = [
 
 const database = new PrismaClient();
 
-const getAllRelationsM = (): Relation[] => {
-    return relations;
-}
+
 const getAllRelations = async (): Promise<Relation[]> => {
     try {
             const relationsPrisma = await database.relation.findMany({
@@ -45,9 +43,7 @@ const getAllRelationsFromArticle = async ({article_id}: {article_id: number}): P
                     article_id: article_id
                 }
         })    
-        //console.log(relationsPrisma)
         const relations = mapToRelations(relationsPrisma)
-        //console.log(relation)
         return relations;
          
     } catch (error){
@@ -56,21 +52,107 @@ const getAllRelationsFromArticle = async ({article_id}: {article_id: number}): P
     }
 }
 
-const createRelation = ({subject_entity, object_entity, relation_type}: {subject_entity: string, object_entity: string, relation_type: Relation_type}): Relation => {
-    const newRelation = Relation.create(currentid++, subject_entity, object_entity, relation_type)
-    relations.push(newRelation);
-    return newRelation;
+
+
+const createRelation = async ({subject_entity, object_entity, relation_type, article_id}: {subject_entity: string, object_entity: string, relation_type: Relation_type, article_id: number}): Promise<Relation> => {
+    try {
+        const type_id = relation_type.get_id
+        const relationPrisma = await database.relation.create({
+            data: {
+                subject_entity,
+                object_entity,
+                relation_type_id: type_id,
+                article_id: article_id
+            },
+            include: {
+                relation_type: true
+            }
+        })
+        return  mapToRelation(relationPrisma);
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
 }
 
-const findRelation = ({relation_id}: {relation_id: number}): Relation => {
-    const relation = relations.filter(rel => rel.relation_id === relation_id)
-    return relation[0];
+const findRelation = async ({relation_id}: {relation_id: number}): Promise<Relation> =>{
+    try {
+        const relationPrisma = await database.relation.findFirst({
+            where: {
+                relation_id: relation_id
+            },
+            include: {
+                relation_type: true
+            }
+        })
+        if (!relationPrisma){
+            return null
+        } else {
+            return mapToRelation(relationPrisma);
+        }
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
 }
 
-const deleteRelation = ({relation_id}: {relation_id: number}): Relation => {
+const updateRelationAll = async ({relation_id, subject_entity, object_entity, relation_type_id}: {relation_id: number, subject_entity: string, object_entity: string, relation_type_id: number}): Promise<Relation> => {
+    try {
+        const relationPrisma = await database.relation.update({
+            where: {
+                relation_id: relation_id
+            },
+            data: {
+                subject_entity: subject_entity,
+                object_entity: object_entity,
+                relation_type_id: relation_type_id,
+            },
+            include: {
+                relation_type: true
+            }
+        })
+        return mapToRelation(relationPrisma)
+    }catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+} 
+
+const deleteRelation = async ({relation_id}: {relation_id: number}): Promise<Relation> => {
+    try{
+        const relationPrisma = await database.relation.delete({
+            where: {
+                relation_id: relation_id
+            },
+            include: {
+                relation_type: true
+            }
+        })
+        return mapToRelation(relationPrisma)
+    }catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
+
+const deleteRelationM = ({relation_id}: {relation_id: number}): Relation => {
     const relation = relations.filter(rel => rel.relation_id === relation_id)
     relations = relations.filter(rel => rel.relation_id !== relation_id)
     return relation[0];
 }
 
-export default {getAllRelationsFromArticle, getAllRelations, createRelation, findRelation, deleteRelation}
+/** Local **/
+const getAllRelationsM = (): Relation[] => {
+    return relations;
+}
+const createRelationM = ({subject_entity, object_entity, relation_type}: {subject_entity: string, object_entity: string, relation_type: Relation_type}): Relation => {
+    const newRelation = Relation.create(currentid++, subject_entity, object_entity, relation_type)
+    relations.push(newRelation);
+    return newRelation;
+}
+const findRelationM = ({relation_id}: {relation_id: number}): Relation => {
+    const relation = relations.filter(rel => rel.relation_id === relation_id)
+    return relation[0];
+}
+
+export default {updateRelationAll, getAllRelationsFromArticle, getAllRelations, createRelation, findRelation, deleteRelation}

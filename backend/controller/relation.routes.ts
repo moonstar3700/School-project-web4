@@ -4,7 +4,7 @@ import RelationService from '../service/relation.service'
 import relationService from '../service/relation.service';
 const relationRouter = express.Router()
 // get all relations
-relationRouter.get('/', async (req: Request, res: Response) => {
+relationRouter.get('/all', async (req: Request, res: Response) => {
     try {
         const relations = await relationService.getAllRelations();
         res.status(200).json(relations);
@@ -13,14 +13,26 @@ relationRouter.get('/', async (req: Request, res: Response) => {
     }
 })
 
+// get all relations
+relationRouter.get('/',async (req: Request, res: Response) => {
+    try {
+        const article_id = req.body.id
+        const relations = await relationService.getRelationsFromArticle({article_id})
+        res.status(200).json(relations)
+    } catch (error) {
+        res.status(500).json({status: 'error', errorMessage: error.message});
+    }
+})
+
 // create 
 relationRouter.post('/add',async (req: Request, res: Response) => {
     try {
+        const article_id = req.body.article_id
         const subject_entity = req.body.subject
         const object_entity = req.body.object
         const type_name = req.body.type.name
         const is_unique = req.body.type.unique
-        const relation = await relationService.createRelation({subject_entity, object_entity, type_name, is_unique})
+        const relation = await relationService.createRelation({subject_entity, object_entity, type_name, is_unique, article_id})
         res.status(200).json(relation);
     } catch (error) {
         res.status(500).json({status: 'error', errorMessage: error.message});

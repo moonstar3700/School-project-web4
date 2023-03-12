@@ -13,4 +13,12 @@ const mapToRelationType = ({
     is_unique
 )
 
-export  {mapToRelationType}
+const mapToRelationTypes = (
+    list: any[]
+): Relation_type[] => {
+    const result:  Relation_type[] = [];
+    list.forEach(object => {result.push(mapToRelationType(object)) })
+    return result;
+}
+
+export  {mapToRelationType, mapToRelationTypes}
