@@ -1,9 +1,69 @@
+/**
+ * @swagger
+ *   components:
+ *    schemas: 
+ *      Relation:
+ *          type: object
+ *          properties:
+ *            relation_id: 
+ *               type: number
+ *               format: int64
+ *            subject_entity:
+ *               type: string
+ *               description: The subject of the relation.
+ *            object_entity:
+ *               type: string
+ *               description: The object of the relation
+ *            relation_type:
+ *               type: Relation_type
+ *               description: The action in a relation
+ * 
+ *      Relation_type:
+ *          type: object
+ *          properties:
+ *            type_id:
+ *              type: number
+ *              format: int64
+ *            type_name: 
+ *              type: string
+ *              description: The action of a relation
+ *            is_unique:
+ *              type: boolean
+ *              description: Indication whether the type is unique or not
+ */
+
+
+
 import express, { Request, Response, Handler } from 'express';
 import { ArticleType, RelationType } from '../types';
 import RelationService from '../service/relation.service'
 import relationService from '../service/relation.service';
 const relationRouter = express.Router()
-// get all relations
+
+/**
+ * @swagger
+ *   /relation/all:
+ *     get:
+ *       summary: Get all existing relations
+ *       responses:
+ *         200:
+ *           description: Returns all existing relations
+ *           content: 
+ *              application/json:
+ *                  schema:
+ *                     $ref: '#/components/schemas/Relation'
+ *         500:
+ *           description: There was an error
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   errorMessage:
+ *                     type: string
+ *                     description: Something went wrong
+ *     
+ */
 relationRouter.get('/all', async (req: Request, res: Response) => {
     try {
         const relations = await relationService.getAllRelations();
@@ -13,10 +73,42 @@ relationRouter.get('/all', async (req: Request, res: Response) => {
     }
 })
 
-// get all relations
-relationRouter.get('/',async (req: Request, res: Response) => {
+/**
+ * @swagger
+ *   /relation/{id}:
+ *     get:
+ *       summary: Get all relations related to an article
+ *       parameters:
+ *         - name: id
+ *           in: path
+ *           description: Article id
+ *           required: true
+ *           schema: 
+ *             type: number
+ *             format: int64
+ *             default: 99
+ *               
+ *       responses:
+ *         200:
+ *           description: Returns all existing relations related to the given article id
+ *           content: 
+ *              application/json:
+ *                  schema:
+ *                     $ref: '#/components/schemas/Relation'
+ *         500:
+ *           description: There was an error
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   errorMessage:
+ *                     type: string
+ *                     description: Something went wrong       
+ */
+relationRouter.get('/:id',async (req: Request, res: Response) => {
     try {
-        const article_id = req.body.id
+        const article_id = Number(req.params.id)
         const relations = await relationService.getRelationsFromArticle({article_id})
         res.status(200).json(relations)
     } catch (error) {
@@ -24,7 +116,51 @@ relationRouter.get('/',async (req: Request, res: Response) => {
     }
 })
 
-// create 
+/**
+ * @swagger
+ *   /relation/add:
+ *     post:
+ *        summary: Adds a relation to an article
+ *        requestBody:
+ *          required: true
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties: 
+ *                  id: 
+ *                    type: number
+ *                  subject:
+ *                    type: string
+ *                  object:
+ *                    type: string
+ *                  type:
+ *                    type: object
+ *                    properties:    
+ *                      name:
+ *                        type: string
+ *                      unique: 
+ *                        type: boolean
+ *              examples:
+ *                  test:
+ *                      summary: adds a relation
+ *                      value:
+ *                         article_id: 99
+ *                         subject: swagger test
+ *                         object: swagger object
+ *                         type: 
+ *                           name: is
+ *                           unique: false
+ *        responses:
+ *          200:
+ *             description: Adds a relation to the article with the given id
+ *             content: 
+ *                application/json:
+ *                    schema:
+ *                       $ref: '#/components/schemas/Relation'
+ * 
+ * 
+ */ 
 relationRouter.post('/add',async (req: Request, res: Response) => {
     try {
         const article_id = req.body.article_id
