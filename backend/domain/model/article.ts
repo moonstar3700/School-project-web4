@@ -19,8 +19,6 @@ class Article {
         return new Article(article_id, title, content, date_published);
     }
 
-    
-
 }
 
 export {Article}

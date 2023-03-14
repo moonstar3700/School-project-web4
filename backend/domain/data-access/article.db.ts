@@ -1,4 +1,6 @@
 import { Article } from "../model/article";
+import { Prisma, PrismaClient } from "@prisma/client";
+
 
 let currentID = 0;
 
@@ -8,7 +10,23 @@ let articles: Article[] = [
 
 ]
 
+const database = new PrismaClient();
+
+
 const getAllArticles = (): Article[] => {return articles};
+
+const getAllArticlesT = async (): Promise<Article[]> => {
+    try {
+        const articlesPrisma = await database.article.findMany({
+
+        })
+        console.log(articlesPrisma)
+        return null
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
 
 const createArticle = ({content, title}: {content: string, title: string}): Article => {
     const article = Article.create(currentID++, content, title, Date.now())
@@ -27,4 +45,4 @@ const deleteArticle = ({article_id}: {article_id: number}): Article => {
     return article[0]
 }
 
-export default {getAllArticles, createArticle, findArticle, deleteArticle}
+export default {getAllArticles, createArticle, findArticle, deleteArticle, getAllArticlesT}

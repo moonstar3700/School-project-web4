@@ -3,7 +3,11 @@ import {Article} from '../domain/model/article';
 import { ArticleType } from '../types';
 
 // article overview
-const getAllArticles = (): Article[] => articleDB.getAllArticles();
+const getAllArticles = (): Article[] => {
+    articleDB.getAllArticlesT();
+    return articleDB.getAllArticles();
+}
+
 
 // find article
 const findArticle = ({article_id}: {article_id: number}): Article => {

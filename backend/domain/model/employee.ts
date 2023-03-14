@@ -27,12 +27,12 @@ class Employee {
         return this.articles;
     }
 
-    constructor(id: number, name: string, password: string, email: string, articles: Article[]) {
+    constructor(id: number, name: string, password: string, email: string) {
         this.employee_id = id;
         this.name = name;
         this.password = password;
         this.email = email;
-        this.articles = articles;
+        this.articles = [];
     }
 
     
@@ -44,7 +44,7 @@ class Employee {
     }
 
     static create(id, name, password, email){
-        return new Employee(id, name, password, email, null);
+        return new Employee(id, name, password, email);
     }
     
 }

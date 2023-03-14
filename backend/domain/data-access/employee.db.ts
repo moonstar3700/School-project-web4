@@ -1,6 +1,7 @@
 import { Employee } from "../model/employee";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { transcode } from "buffer";
+import {mapToEmployee, mapToEmployees} from './employee.mapper'
 
 const database = new PrismaClient();
 
@@ -12,20 +13,24 @@ const employees: Employee[] = [
     Employee.create(currentid++, "user3", "t", "test3@mail.com")
 ]
 
+
+
 let employeeslength:number = employees.length;
 
-const getAllEmployees = (): Employee[] => {return employees}; 
+const getAllEmployeesM = (): Employee[] => {return employees}; 
 
-/*const getAllEmployees = async (): Promise<Employee[]> => {
+const getAllEmployees = async (): Promise<Employee[]> => {
     try {
-        const employeesPrisma = await database.employee.findMany();
+        const employeesPrisma = await database.employee.findMany()
         console.log(employeesPrisma)
-        return 
+        const employees = mapToEmployees(employeesPrisma)
+        console.log(employees)
+        return employees
     } catch (error){
         console.error(error);
         throw new Error('Database error. See server log for details.')
     }
-}*/
+}
 
 //############## TODO #################
 const getEmployeesWithEmailPass = ({email, password}: {email: string, password: string} ): Employee => {

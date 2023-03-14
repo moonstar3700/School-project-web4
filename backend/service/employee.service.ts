@@ -2,7 +2,9 @@ import EmployeeDB from '../domain/data-access/employee.db';
 import {Employee} from '../domain/model/employee';
 import { EmployeeType } from '../types';
 
-const getAllEmployees = (): Employee[] => EmployeeDB.getAllEmployees();
+const getAllEmployees = async (): Promise<Employee[]> => {
+    return EmployeeDB.getAllEmployees();
+}
 
 const getEmployeesWithEmailPass = ({email, password}: {email: string, password: string} ): Employee => {
     if (!email || !email.trim()){

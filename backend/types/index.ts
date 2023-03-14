@@ -12,7 +12,6 @@ export interface ArticleType{
     title: string;
     content: string;
     date_published: Date;
-    employees: Array<EmployeeType> | null;
     relations: Array<RelationType> | null;
 }
 

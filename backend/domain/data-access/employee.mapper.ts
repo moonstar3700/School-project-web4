@@ -6,24 +6,20 @@ import { Article as articlePrisma} from '@prisma/client'
 import employeeService from '../../service/employee.service';
  
 
-/*const mapToEmployee = ({
+const mapToEmployee = ({
     employee_id,
     name,
     password,
     email,
-    articles,
-}: employeePrisma & {
-    articles?: articlePrisma[] 
-}): Employee => 
+}: employeePrisma ): Employee => 
     new Employee(
         employee_id,
         name,
         password,
-        email,
-        articles,
+        email
     )
 
 
 const mapToEmployees = (employees_prisma: employeePrisma[]): Employee[] => employees_prisma.map(mapToEmployee)
 
-export default {mapToEmployee, mapToEmployees}*/
+export {mapToEmployee, mapToEmployees}
