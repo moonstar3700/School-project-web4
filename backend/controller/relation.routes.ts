@@ -175,7 +175,51 @@ relationRouter.post('/add',async (req: Request, res: Response) => {
     }
 })
 
-//update
+/**
+ * @swagger
+ *   /relation/update:
+ *     put:
+ *        summary: Updates a relation to an article
+ *        requestBody:
+ *          required: true
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties: 
+ *                  id: 
+ *                    type: number
+ *                  subject:
+ *                    type: string
+ *                  object:
+ *                    type: string
+ *                  type:
+ *                    type: object
+ *                    properties:    
+ *                      name:
+ *                        type: string
+ *                      unique: 
+ *                        type: boolean
+ *              examples:
+ *                  test:
+ *                      summary: adds a relation
+ *                      value:
+ *                         id: 99
+ *                         subject: swagger test
+ *                         object: swagger object
+ *                         type: 
+ *                           name: is
+ *                           unique: false
+ *        responses:
+ *          200:
+ *             description: Adds a relation to the article with the given id
+ *             content: 
+ *                application/json:
+ *                    schema:
+ *                       $ref: '#/components/schemas/Relation'
+ * 
+ * 
+ */
 relationRouter.put('/update', async (req: Request, res: Response) => {
     try {
         const relation_id = req.body.id
@@ -190,10 +234,42 @@ relationRouter.put('/update', async (req: Request, res: Response) => {
     }
 })
 
-// delete
-relationRouter.delete('/delete',async (req :Request, res: Response) => {
+/**
+ * @swagger
+ *   /relation/delete/{id}:
+ *     delete:
+ *       summary: delete a relation
+ *       parameters:
+ *         - name: id
+ *           in: path
+ *           description: relation id
+ *           required: true
+ *           schema: 
+ *             type: number
+ *             format: int64
+ *             default: 99
+ *               
+ *       responses:
+ *         200:
+ *           description: Returns all existing relations related to the given article id
+ *           content: 
+ *              application/json:
+ *                  schema:
+ *                     $ref: '#/components/schemas/Relation'
+ *         500:
+ *           description: There was an error
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   errorMessage:
+ *                     type: string
+ *                     description: Something went wrong       
+ */
+relationRouter.delete('/delete/:id',async (req :Request, res: Response) => {
     try {
-        const relation_id = req.body.id
+        const relation_id = Number(req.params.id)
         const relation = await relationService.deleteRelation({relation_id})
         res.status(200).json(relation);
     } catch (error) {
