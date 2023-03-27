@@ -59,7 +59,7 @@ const updateRelation = async ({relation_id, subject_entity, object_entity, type_
     if (!type_name || !type_name.trim()){
         type_name = "/";
     }
-    const relationExists = relationDB.findRelation({relation_id})
+    const relationExists = await relationDB.findRelation({relation_id})
     if (!relationExists){
         throw new Error("relation does not exist")
     }
@@ -76,7 +76,7 @@ const updateRelation = async ({relation_id, subject_entity, object_entity, type_
 }
 
 const deleteRelation = async ({relation_id}: {relation_id: number}): Promise<Relation> => {
-    const relationExists = relationDB.findRelation({relation_id})
+    const relationExists = await relationDB.findRelation({relation_id})
     if (!relationExists){
         throw new Error("relation does not exist")
     }

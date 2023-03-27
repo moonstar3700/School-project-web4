@@ -32,14 +32,68 @@ const getAllEmployees = async (): Promise<Employee[]> => {
     }
 }
 
+const getEmployeesWithEmailPass = async ({email, password}: {email: string, password: string} ): Promise<Employee> => {
+    try {
+        const employeesPrisma = await database.employee.findFirst({
+            where: {
+                email: email,
+                password: password
+            }
+        }) 
+        if (!employeesPrisma){
+            return null
+        } else {
+            return mapToEmployee(employeesPrisma);
+        }
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
+
+const getEmployeesWithEmail = async ({email}: {email: string} ): Promise<Employee> => {
+    try {
+        const employeesPrisma = await database.employee.findFirst({
+            where: {
+                email: email,
+            }
+        }) 
+        if (!employeesPrisma){
+            return null
+        } else {
+            return mapToEmployee(employeesPrisma);
+        }
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
+
+const createEmployee = async ({name, password, email}: {name: string, password: string, email: string}): Promise<Employee> => {
+    try {
+        const employeePrisma = await database.employee.create({
+            data: {
+                name,
+                password,
+                email
+            }
+        })
+        return mapToEmployee(employeePrisma)
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
+
+
 //############## TODO #################
-const getEmployeesWithEmailPass = ({email, password}: {email: string, password: string} ): Employee => {
+const getEmployeesWithEmailPass1 = ({email, password}: {email: string, password: string} ): Employee => {
     return Employee.create(currentid++, "login", "t", "logintest@mail.com")
 }
 
 //############## TODO #################
-const createEmployee = ({name, password, email}: {name: string, password: string, email: string}): Employee => {
+const createEmployee1 = ({name, password, email}: {name: string, password: string, email: string}): Employee => {
     return Employee.create(currentid++, "new", "t", "newtest@mail.com")
 }
 
-export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee}
+export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee, getEmployeesWithEmail}
