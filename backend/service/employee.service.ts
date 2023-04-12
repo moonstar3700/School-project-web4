@@ -7,6 +7,12 @@ const getAllEmployees = async (): Promise<Employee[]> => {
     return EmployeeDB.getAllEmployees();
 }
 
+const getAllEmployeesArt =async (): Promise<Employee[]> => {
+    return EmployeeDB.getAllEmployeesArt();
+}
+
+// get all articles from one user//
+
 const getEmployeesWithEmailPass = async ({email, password}: {email: string, password: string} ): Promise<Employee> => {
     if (!email || !email.trim()){
         throw new Error('email is empty')
@@ -20,6 +26,7 @@ const getEmployeesWithEmailPass = async ({email, password}: {email: string, pass
     }
     return employeeExists
 }
+
 
 
 
@@ -44,4 +51,4 @@ const createEmployee = async ({name, password, email}: {name: string, password: 
 }
 
 
-export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee};
+export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee, getAllEmployeesArt};

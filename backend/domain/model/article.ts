@@ -8,15 +8,16 @@ class Article {
     readonly date_published: Date;
     relations: Relation[];
 
-    constructor(article_id: number, title: string, content: string, date_published: Date){
+    constructor(article_id: number, title: string, content: string, date_published: Date, relations: Relation[]){
         this.article_id =article_id;
         this.title = title;
         this.content = content;
         this.date_published = date_published;
+        this.relations = relations;
     }
 
     static create(article_id, title, content, date_published){
-        return new Article(article_id, title, content, date_published);
+        return new Article(article_id, title, content, date_published, []);
     }
 
 }

@@ -3,8 +3,7 @@ import {Article} from '../domain/model/article';
 import { ArticleType } from '../types';
 
 // article overview
-const getAllArticles = (): Article[] => {
-    articleDB.getAllArticlesT();
+const getAllArticles = (): Promise<Article[]> => {
     return articleDB.getAllArticles();
 }
 
@@ -33,6 +32,13 @@ const deleteArticle = ({article_id}: {article_id: number}): Article => {
 
 // delete relations function
 
+
+
+//---------------------------------------------------------
+/*const getAllArticlesM = (): Article[] => {
+    articleDB.getAllArticlesT();
+    return articleDB.getAllArticles();
+}*/
 
 export default{getAllArticles, findArticle, createArticle, deleteArticle}
 

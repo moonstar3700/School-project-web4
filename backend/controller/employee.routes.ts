@@ -14,6 +14,17 @@ employeeRouter.get('/', async (req: Request, res: Response) => {
     }
 });
 
+// get all employees and articles
+employeeRouter.get('/all', async (req: Request, res: Response) => {
+    try {
+        const employees = await employeeService.getAllEmployeesArt();
+        res.status(200).json(employees);
+    } catch (error){
+        res.status(500).json({status: 'error'});
+    }
+});
+
+
 // find employee
 employeeRouter.get('/find/:email/:password', async (req: Request, res: Response) => {
     try {

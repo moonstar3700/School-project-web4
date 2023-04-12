@@ -1,7 +1,7 @@
 import { Employee } from "../model/employee";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { transcode } from "buffer";
-import {mapToEmployee, mapToEmployees} from './employee.mapper'
+import {mapToEmployee, mapToEmployees, mapToEmployeeArt, mapToEmployeesArt} from './employee.mapper'
 
 const database = new PrismaClient();
 
@@ -17,13 +17,40 @@ const employees: Employee[] = [
 
 let employeeslength:number = employees.length;
 
-const getAllEmployeesM = (): Employee[] => {return employees}; 
+
 
 const getAllEmployees = async (): Promise<Employee[]> => {
     try {
         const employeesPrisma = await database.employee.findMany()
         console.log(employeesPrisma)
         const employees = mapToEmployees(employeesPrisma)
+        console.log(employees)
+        return employees
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
+
+
+//TODO **************************************************
+const getAllEmployeesArt = async (): Promise<Employee[]> => {
+    try {
+        const employeesPrisma = await database.employee.findMany({
+            include: {
+                articles: {
+                    include: {
+                        relations: {
+                            include: {
+                                relation_type: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        console.log(employeesPrisma)
+        const employees = mapToEmployeesArt(employeesPrisma)
         console.log(employees)
         return employees
     } catch (error){
@@ -85,15 +112,15 @@ const createEmployee = async ({name, password, email}: {name: string, password: 
     }
 }
 
+const getAllEmployeesM = (): Employee[] => {return employees}; 
 
-//############## TODO #################
 const getEmployeesWithEmailPass1 = ({email, password}: {email: string, password: string} ): Employee => {
     return Employee.create(currentid++, "login", "t", "logintest@mail.com")
 }
 
-//############## TODO #################
+
 const createEmployee1 = ({name, password, email}: {name: string, password: string, email: string}): Employee => {
     return Employee.create(currentid++, "new", "t", "newtest@mail.com")
 }
 
-export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee, getEmployeesWithEmail}
+export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee, getEmployeesWithEmail, getAllEmployeesArt}

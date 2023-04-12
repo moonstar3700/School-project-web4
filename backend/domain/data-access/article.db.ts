@@ -1,5 +1,7 @@
 import { Article } from "../model/article";
 import { Prisma, PrismaClient } from "@prisma/client";
+import { mapToArticle, mapToArticles } from "./article.mapper";
+
 
 
 let currentID = 0;
@@ -13,7 +15,24 @@ let articles: Article[] = [
 const database = new PrismaClient();
 
 
-const getAllArticles = (): Article[] => {return articles};
+const getAllArticles = async (): Promise<Article[]> => {
+    try {
+            const articlesPrisma = await database.article.findMany({
+                include: {
+                    relations: {
+                        include: {
+                            relation_type: true
+                        }
+                    }
+                }
+            })
+            const articles = mapToArticles(articlesPrisma)
+            return articles;
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+};
 
 const getAllArticlesT = async (): Promise<Article[]> => {
     try {
@@ -44,5 +63,7 @@ const deleteArticle = ({article_id}: {article_id: number}): Article => {
     articles = articles.filter(art => art !== article[0])
     return article[0]
 }
+//-----------------------------------------------------------------
+const getAllArticlesM = (): Article[] => {return articles};
 
 export default {getAllArticles, createArticle, findArticle, deleteArticle, getAllArticlesT}
