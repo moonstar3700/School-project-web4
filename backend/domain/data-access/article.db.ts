@@ -74,8 +74,11 @@ const findArticle = async ({article_id}: {article_id: number}): Promise<Article>
                 }
             }
         })
-        const article = mapToArticle(articlePrisma)
-        return article;
+        if (!articlePrisma){
+            return null
+        } else {
+            return mapToArticle(articlePrisma);
+        }
     } catch (error){
         console.error(error);
         throw new Error('Database error. See server log for details.')

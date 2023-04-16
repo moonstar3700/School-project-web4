@@ -22,9 +22,7 @@ const getAllRelations = async (): Promise<Relation[]> => {
                     relation_type: true
                 },
         })             
-        //console.log(relationsPrisma)
         const relations = mapToRelations(relationsPrisma)
-        //console.log(relation)
         return relations;
          
     } catch (error){

@@ -22,9 +22,7 @@ let employeeslength:number = employees.length;
 const getAllEmployees = async (): Promise<Employee[]> => {
     try {
         const employeesPrisma = await database.employee.findMany()
-        console.log(employeesPrisma)
         const employees = mapToEmployees(employeesPrisma)
-        console.log(employees)
         return employees
     } catch (error){
         console.error(error);

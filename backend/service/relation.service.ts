@@ -1,5 +1,6 @@
 import relationDb from '../domain/data-access/relation.db';
 import relationDB from '../domain/data-access/relation.db';
+import articleDB from '../domain/data-access/article.db';
 import relation_typeDb from '../domain/data-access/relation_type.db';
 import { Relation } from "../domain/model/relation";
 
@@ -9,7 +10,10 @@ const getRelationsFromArticle = ({article_id}: {article_id: number}): Promise<Re
     if (!article_id || Number.isNaN(Number(article_id))){
         throw new Error('Article id is invalid')
     }
-    // check for existence article
+    if (articleDB.findArticle({article_id}) === null){
+        throw new Error('Corresponding article does not exist')
+    }
+
     return relationDB.getAllRelationsFromArticle({article_id})
 }
 
@@ -29,8 +33,11 @@ const createRelation = async ({subject_entity, object_entity, type_name, is_uniq
     if (!type_name || !type_name.trim()){
         type_name = "/";
     }
-    //check if article id exists
 
+    if (articleDB.findArticle({article_id}) === null){
+        throw new Error('Corresponding article does not exist')
+    }
+    
     let relation_type = await relation_typeDb.findType({type_name, is_unique});
     if (relation_type === null){
         relation_type = await relation_typeDb.createType({type_name, is_unique});
