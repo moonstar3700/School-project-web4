@@ -7,6 +7,12 @@ const getAllArticles = (): Promise<Article[]> => {
     return articleDB.getAllArticles();
 }
 
+const getAllArticlesFromEmployee = async ({employee_id}: {employee_id: number}): Promise<Article[]> => {
+    if (!employee_id || Number.isNaN(Number(employee_id))){
+        throw new Error('Employee id is invalid')
+    }
+    return articleDB.getAllArticlesFromEmployee({employee_id})
+}
 
 // find article
 const findArticle = ({article_id}: {article_id: number}): Article => {
@@ -15,6 +21,15 @@ const findArticle = ({article_id}: {article_id: number}): Article => {
 
 // create article
 const createArticle = ({content, title, employee_id}: {content: string, title: string, employee_id: number}): Promise<Article> => {
+    if (!content || !content.trim()){
+        throw new Error('content can\'t be empty');
+    } 
+    if (!title || !title.trim()){
+        throw new Error('title can\'t be empty');
+    } 
+    if (!employee_id || Number.isNaN(Number(employee_id))){
+        throw new Error('Employee id is invalid')
+    }
     return articleDB.createArticle({content, title, employee_id});
 }
 
@@ -40,6 +55,6 @@ const deleteArticle = ({article_id}: {article_id: number}): Article => {
     return articleDB.getAllArticles();
 }*/
 
-export default{getAllArticles, findArticle, createArticle, deleteArticle}
+export default{getAllArticles, findArticle, createArticle, deleteArticle, getAllArticlesFromEmployee}
 
 

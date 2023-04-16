@@ -14,6 +14,16 @@ articleRouter.get('/', async (req: Request, res: Response) => {
     }
 })
 
+articleRouter.get('/allFrom/:id', async(req: Request, res: Response) =>{
+    try {
+        const employee_id = Number(req.params.id)
+        const articles = await articleService.getAllArticlesFromEmployee({employee_id})
+        res.status(200).json(articles);
+    } catch (error) {
+        res.status(500).json({status: 'error'});
+    }
+})
+
 // find article with id --> should be title?
 articleRouter.get('/find', async(req: Request, res: Response) =>{
     try {
@@ -39,9 +49,9 @@ articleRouter.post('/add', async(req: Request, res: Response) => {
 })
 
 // delete article
-articleRouter.delete('/delete', async(req: Request, res: Response) =>{
+articleRouter.delete('/delete/:id', async(req: Request, res: Response) =>{
     try {
-        var article_id: number = req.body.id
+        const article_id = Number(req.params.id)
         const article = await articleService.deleteArticle({article_id})
         res.status(200).json(article);
     }  catch (error){
