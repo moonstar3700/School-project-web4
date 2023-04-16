@@ -61,9 +61,4 @@ employeeRouter.post('/add', async (req: Request, res: Response) => {
     }
 })
 
-// add article
-
-// delete article?
-// delete user?
-
 export {employeeRouter};
