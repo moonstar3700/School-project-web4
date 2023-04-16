@@ -55,15 +55,20 @@ const createArticle = async ({content, title, employee_id}: {content: string, ti
         console.log(time)
         const articlesPrisma = await database.article.create({
             data: {
-                title,
-                content,
-                time,
-                
-                
-
+                title: title,
+                content: content,
+                employees: {connect: {employee_id: employee_id}}
+            },
+            include: {
+                relations: {
+                    include: {
+                        relation_type: true
+                    }
+                }
             }
         })
-        return null
+        const article = mapToArticle(articlesPrisma)
+        return article
     } catch (error){
         console.error(error);
         throw new Error('Database error. See server log for details.')
