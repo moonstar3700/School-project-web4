@@ -25,9 +25,9 @@ articleRouter.get('/allFrom/:id', async(req: Request, res: Response) =>{
 })
 
 // find article with id --> should be title?
-articleRouter.get('/find', async(req: Request, res: Response) =>{
+articleRouter.get('/findId/:id', async(req: Request, res: Response) =>{
     try {
-        var article_id: number = req.body.id
+        const article_id = Number(req.params.id)
         const article = await articleService.findArticle({article_id})
         res.status(200).json(article);
     } catch (error) {

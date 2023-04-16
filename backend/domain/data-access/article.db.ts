@@ -60,6 +60,28 @@ const getAllArticlesFromEmployee = async ({employee_id}: {employee_id: number}):
     }
 }
 
+const findArticle = async ({article_id}: {article_id: number}): Promise<Article> => {
+    try {
+        const articlePrisma = await database.article.findFirst({
+            where: {
+                article_id: article_id
+            },
+            include: {
+                relations: {
+                    include: {
+                        relation_type: true
+                    }
+                }
+            }
+        })
+        const article = mapToArticle(articlePrisma)
+        return article;
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
+
 const createArticle = async ({content, title, employee_id}: {content: string, title: string, employee_id: number}): Promise<Article> => {
     try {
         const articlesPrisma = await database.article.create({
@@ -88,7 +110,7 @@ const createArticle = async ({content, title, employee_id}: {content: string, ti
 //-----------------------------------------------------------------
 const getAllArticlesM = (): Article[] => {return articles};
 
-const findArticle = ({article_id}: {article_id: number}): Article => {
+const findArticleM = ({article_id}: {article_id: number}): Article => {
     const article = articles.filter(art => art.article_id === article_id);
     return article[0]
 }

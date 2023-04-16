@@ -15,8 +15,11 @@ const getAllArticlesFromEmployee = async ({employee_id}: {employee_id: number}):
 }
 
 // find article
-const findArticle = ({article_id}: {article_id: number}): Article => {
-   return  articleDB.findArticle({article_id});
+const findArticle = async ({article_id}: {article_id: number}): Promise<Article> => {
+    if (!article_id || Number.isNaN(Number(article_id))){
+        throw new Error('Article id is invalid')
+    }
+    return articleDB.findArticle({article_id});
 }
 
 // create article
