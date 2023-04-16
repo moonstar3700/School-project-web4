@@ -30,7 +30,8 @@ articleRouter.post('/add', async(req: Request, res: Response) => {
     try {
         var content: string = req.body.content
         var title: string = req.body.title
-        const article = await articleService.createArticle({content, title});
+        var employee_id: number = req.body.employee_id
+        const article = await articleService.createArticle({content, title, employee_id});
         res.status(200).json(article);
     } catch (error) {
         res.status(500).json({status: 'error'});

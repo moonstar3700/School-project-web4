@@ -26,6 +26,8 @@ const getAllArticles = async (): Promise<Article[]> => {
                     }
                 }
             })
+            const time = new Date().toLocaleString()
+            console.log(time)
             const articles = mapToArticles(articlesPrisma)
             return articles;
     } catch (error){
@@ -34,7 +36,7 @@ const getAllArticles = async (): Promise<Article[]> => {
     }
 };
 
-const getAllArticlesT = async (): Promise<Article[]> => {
+const getAllArticlesFromEmployee = async (): Promise<Article[]> => {
     try {
         const articlesPrisma = await database.article.findMany({
 
@@ -47,10 +49,25 @@ const getAllArticlesT = async (): Promise<Article[]> => {
     }
 }
 
-const createArticle = ({content, title}: {content: string, title: string}): Article => {
-    const article = Article.create(currentID++, content, title, Date.now())
-    articles.push(article);
-    return article;
+const createArticle = async ({content, title, employee_id}: {content: string, title: string, employee_id: number}): Promise<Article> => {
+    try {
+        const time = new Date().toLocaleString()
+        console.log(time)
+        const articlesPrisma = await database.article.create({
+            data: {
+                title,
+                content,
+                time,
+                
+                
+
+            }
+        })
+        return null
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
 }
 
 const findArticle = ({article_id}: {article_id: number}): Article => {
@@ -66,4 +83,4 @@ const deleteArticle = ({article_id}: {article_id: number}): Article => {
 //-----------------------------------------------------------------
 const getAllArticlesM = (): Article[] => {return articles};
 
-export default {getAllArticles, createArticle, findArticle, deleteArticle, getAllArticlesT}
+export default {getAllArticles, createArticle, findArticle, deleteArticle, getAllArticlesFromEmployee}

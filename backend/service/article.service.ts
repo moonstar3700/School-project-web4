@@ -14,8 +14,8 @@ const findArticle = ({article_id}: {article_id: number}): Article => {
 }
 
 // create article
-const createArticle = ({content, title}: {content: string, title: string}): Article => {
-    return articleDB.createArticle({content, title});
+const createArticle = ({content, title, employee_id}: {content: string, title: string, employee_id: number}): Promise<Article> => {
+    return articleDB.createArticle({content, title, employee_id});
 }
 
 // delete article
