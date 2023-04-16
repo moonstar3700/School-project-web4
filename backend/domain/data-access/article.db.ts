@@ -106,6 +106,27 @@ const createArticle = async ({content, title, employee_id}: {content: string, ti
     }
 }
 
+const deleteArticle = async ({article_id}: {article_id: number}): Promise<Article> => {
+    try {
+        const articlePrisma = await database.article.delete({
+            where: {
+                article_id: article_id
+            },
+            include: {
+                relations: {
+                    include: {
+                        relation_type: true
+                    }
+                }
+            }
+        })
+        const article = mapToArticle(articlePrisma)
+        return article
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
 
 //-----------------------------------------------------------------
 const getAllArticlesM = (): Article[] => {return articles};
@@ -115,7 +136,7 @@ const findArticleM = ({article_id}: {article_id: number}): Article => {
     return article[0]
 }
 
-const deleteArticle = ({article_id}: {article_id: number}): Article => {
+const deleteArticleM = ({article_id}: {article_id: number}): Article => {
     const article = articles.filter(art => art.article_id === article_id);
     articles = articles.filter(art => art !== article[0])
     return article[0]

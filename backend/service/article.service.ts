@@ -37,20 +37,12 @@ const createArticle = ({content, title, employee_id}: {content: string, title: s
 }
 
 // delete article
-const deleteArticle = ({article_id}: {article_id: number}): Article => {
-    const article = articleDB.deleteArticle({article_id});
-    if (article === undefined) {
-        throw new Error('relation doesn\'t exist')
+const deleteArticle = async ({article_id}: {article_id: number}): Promise<Article> => {
+    if (!article_id || Number.isNaN(Number(article_id))){
+        throw new Error('Article id is invalid')
     }
-    return article;
+    return articleDB.deleteArticle({article_id});
 }
-// get all articles from employee met ID
-
-// add relationships function
-
-// delete relations function
-
-
 
 //---------------------------------------------------------
 /*const getAllArticlesM = (): Article[] => {
