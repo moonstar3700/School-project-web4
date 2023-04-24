@@ -1,5 +1,6 @@
 import Head from "next/head"
 import Header from "@/components/header"
+import Articles from "./articles"
 
 
 export default function Home() {
@@ -8,8 +9,13 @@ export default function Home() {
       <Head>
         <title>News Capture</title>
       </Head>
-      <Header></Header>
-      <p>hello</p>
+      <main>
+        <Header></Header>
+        <h1>add articles</h1>
+
+        <h1>Articles</h1>
+        <Articles></Articles>
+      </main>
 
     </>
   )

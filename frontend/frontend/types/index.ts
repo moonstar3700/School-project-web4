@@ -1,28 +1,28 @@
 
-export interface EmployeeType{
+export interface Employee{
     employee_id : number;
     name: string;
     password: string;
     email: string;
-    articles: Array<ArticleType> | null;
+    articles: Array<Article> | null;
 }
 
-export interface ArticleType{
+export interface Article{
     article_id: number;
     title: string;
     content: string;
     date_published: Date;
-    relations: Array<RelationType> | null;
+    relations: Array<Relation> | null;
 }
 
-export interface RelationType{
+export interface Relation{
     relation_id: number;
     subject_entity: string;
     object_entity: string;
-    relation_type: Relation_typeType;
+    relation_type: Relation_type;
 }
 
-export interface Relation_typeType{
+export interface Relation_type{
     type_id: number;
     type_name: string;
     is_unique: boolean;
