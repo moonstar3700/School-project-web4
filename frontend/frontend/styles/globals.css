@@ -1,7 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root {
+
+/*:root {
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
@@ -18,4 +19,45 @@
 body {
     color: rgb(var(--foreground-rgb));
     background: linear-gradient( to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}*/
+
+
+/*header*/
+
+.header {
+    margin: auto;
+    margin-bottom: 1rem;
 }
+
+
+/*end header*/
+
+
+/*article overview*/
+
+.article-container {
+    border: solid black 3px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 20px;
+}
+
+
+/* relation table */
+
+#relation-table thead {
+    border-bottom: solid black 2px;
+}
+
+
+#relation-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#relation-table td,
+#relation-table th {
+    padding: 8px;
+}
+
+
+/* end article overview */
