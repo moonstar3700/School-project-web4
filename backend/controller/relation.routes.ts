@@ -269,6 +269,7 @@ relationRouter.put('/update', async (req: Request, res: Response) => {
  */
 relationRouter.delete('/delete/:id',async (req :Request, res: Response) => {
     try {
+        console.log("called")
         const relation_id = Number(req.params.id)
         const relation = await relationService.deleteRelation({relation_id})
         res.status(200).json(relation);

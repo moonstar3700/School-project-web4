@@ -11,15 +11,12 @@ const Articles: React.FC = () => {
   const [articles, setArticles] = useState<Array<Article>>([])
 
   const getArticles = async () => {
-    var test = ArticleService.getAllArticles()
-    console.log(test)
     ArticleService.getAllArticles()
     .then((res) => res.json())
     .then((articles) => setArticles(articles))
   }
 
   useEffect(() => {
-    console.log("use effect")
     getArticles();
   }, [])
 
