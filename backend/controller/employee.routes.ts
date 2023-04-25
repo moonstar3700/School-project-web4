@@ -38,6 +38,7 @@ employeeRouter.get('/find/:email/:password', async (req: Request, res: Response)
 })
 
 employeeRouter.post('/login', async (req: Request, res: Response) => {
+    console.log("called")
     try {
         var email:string = req.body.email;
         var password:string = req.body.password;

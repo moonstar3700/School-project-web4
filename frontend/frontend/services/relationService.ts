@@ -16,8 +16,7 @@ const addRelation = (article_id: number, subject: string, type: string, object: 
                 }
         }
     
-    console.log(jsonData)
-    console.log(JSON.stringify(jsonData))
+
 
     return fetch(process.env.NEXT_PUBLIC_API_URL+`/relation/add`, { 
         method: 'POST', 

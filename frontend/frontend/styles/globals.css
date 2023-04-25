@@ -83,3 +83,13 @@ body {
 
 
 /* end relation forms*/
+
+/* login /register form*/
+
+.login-container {
+    border: solid black 3px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 20px;
+    background-color: white;
+}

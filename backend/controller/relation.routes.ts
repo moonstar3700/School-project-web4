@@ -162,7 +162,6 @@ relationRouter.get('/:id',async (req: Request, res: Response) => {
  * 
  */ 
 relationRouter.post('/add',async (req: Request, res: Response) => {
-    console.log(req.body)
     try {
         const article_id = req.body.article_id
         const subject_entity = req.body.subject
