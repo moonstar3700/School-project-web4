@@ -27,3 +27,8 @@ export interface Relation_type{
     type_name: string;
     is_unique: boolean;
 }
+
+export interface StatusMessage {
+    message: string;
+    type: 'error' | 'success';
+}

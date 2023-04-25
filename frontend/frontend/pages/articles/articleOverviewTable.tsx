@@ -3,20 +3,30 @@ import { Article, Relation, Relation_type} from '../../types'
 import React from 'react'
 import RelationService from '@/services/relationService'
 import { relative } from 'path'
+import { useState, useEffect } from "react"
+import AddRelationForm from '../relations/addRelation'
 
 type Props = {
     articles: Array<Article>
 }
 
-const deleteButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const button: HTMLButtonElement = event.currentTarget;
-}
+const ArticleOverviewTable: React.FC<Props> = ({articles}: Props) => {
+    
+    const [showAddForm, setShowAddForm] = useState<boolean>(false)
+    const [addFormIndex, setAddFormIndex] = useState<number>(0)
 
-const removeRelation  = async (id: number) => {
+    const FormIndex = (index: number) => {
+        setAddFormIndex(index)
+    }
+    
+    const AddForm = () => {
+            setShowAddForm(!showAddForm);
+    }
+
+    const removeRelation = async (id: number) => {
     RelationService.deleteRelation(id)
 }
-
-const ArticleOverviewTable: React.FC<Props> = ({articles}: Props) => {
+    
     if (articles.length === 0) {
         return (
             <>
@@ -58,6 +68,18 @@ const ArticleOverviewTable: React.FC<Props> = ({articles}: Props) => {
                                 ))} 
                                 </tbody>
                                 </table>
+                                
+
+                                {addFormIndex !== article.article_id && (
+                                    <button onClick={(event) => FormIndex(article.article_id)}>add relation</button>
+                                )}
+                                {addFormIndex === article.article_id &&(
+                                    <div>
+                                        <AddRelationForm article_id={article.article_id}/>
+                                    </div>
+                                    
+                                )}
+                                
                             </div>
                         ))}
                     </div>
