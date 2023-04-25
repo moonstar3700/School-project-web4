@@ -2,6 +2,7 @@ import e from 'express';
 import EmployeeDB from '../domain/data-access/employee.db';
 import {Employee} from '../domain/model/employee';
 import { EmployeeType } from '../types';
+import articleDB from '../domain/data-access/article.db';
 
 const getAllEmployees = async (): Promise<Employee[]> => {
     return EmployeeDB.getAllEmployees();
@@ -27,9 +28,6 @@ const getEmployeesWithEmailPass = async ({email, password}: {email: string, pass
     return employeeExists
 }
 
-
-
-
 const createEmployee = async ({name, password, email}: {name: string, password: string, email: string}): Promise<Employee> => 
 {
     if (!name || !name.trim()){
@@ -50,5 +48,15 @@ const createEmployee = async ({name, password, email}: {name: string, password: 
     return EmployeeDB.createEmployee({name, password, email})
 }
 
+const connectArticle = async ({employee_id, article_id}: {employee_id: number, article_id: number}) => {
+    if (!article_id || Number.isNaN(Number(article_id)) || articleDB.findArticle({article_id}) === null){
+        throw new Error('Article id is invalid')
+    }
+    if (!employee_id || Number.isNaN(Number(employee_id))){
+        throw new Error('Employee id is invalid')
+    }
+    return EmployeeDB.connectArticle({employee_id, article_id});
+}
 
-export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee, getAllEmployeesArt};
+
+export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee, getAllEmployeesArt, connectArticle};

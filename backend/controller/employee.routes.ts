@@ -38,7 +38,6 @@ employeeRouter.get('/find/:email/:password', async (req: Request, res: Response)
 })
 
 employeeRouter.post('/login', async (req: Request, res: Response) => {
-    console.log("called")
     try {
         var email:string = req.body.email;
         var password:string = req.body.password;
@@ -57,6 +56,17 @@ employeeRouter.post('/add', async (req: Request, res: Response) => {
     const password = req.body.password;
     const employee = await employeeService.createEmployee({name, email, password});
     res.status(200).json(employee);
+    } catch (error) {
+        res.status(500).json({status: 'error', errorMessage: error.message});
+    }
+})
+
+employeeRouter.post('/asignArticle', async (req: Request, res: Response) => {
+    try {
+        const article_id = req.body.article_id
+        const employee_id = req.body.employee_id
+        const employee = await employeeService.connectArticle({employee_id, article_id})
+        res.status(200).json(employee);
     } catch (error) {
         res.status(500).json({status: 'error', errorMessage: error.message});
     }

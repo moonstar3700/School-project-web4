@@ -57,6 +57,35 @@ const getAllEmployeesArt = async (): Promise<Employee[]> => {
     }
 }
 
+const connectArticle = async ({employee_id, article_id}: {employee_id: number, article_id: number}) => {
+    try {
+        const employeePrisma = await database.employee.update({
+            data: {
+                articles: {connect: {article_id: article_id}}
+            },
+            where: {
+                employee_id: employee_id
+            },
+            include: {
+                articles: {
+                    include: {
+                        relations: {
+                            include: {
+                                relation_type: true
+                            }
+                        }
+                    }
+                }
+            }
+
+        })
+        return mapToEmployeeArt(employeePrisma)
+    } catch (error){
+        console.error(error);
+        throw new Error('Database error. See server log for details.')
+    }
+}
+
 const getEmployeesWithEmailPass = async ({email, password}: {email: string, password: string} ): Promise<Employee> => {
     try {
         const employeesPrisma = await database.employee.findFirst({
@@ -121,4 +150,4 @@ const createEmployee1 = ({name, password, email}: {name: string, password: strin
     return Employee.create(currentid++, "new", "t", "newtest@mail.com")
 }
 
-export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee, getEmployeesWithEmail, getAllEmployeesArt}
+export default {getAllEmployees, getEmployeesWithEmailPass, createEmployee, getEmployeesWithEmail, getAllEmployeesArt, connectArticle}

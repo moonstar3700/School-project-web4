@@ -109,6 +109,19 @@ const createArticle = async ({content, title, employee_id}: {content: string, ti
     }
 }
 
+/*const connectArticle = async ({employee_id, article_id}: {employee_id: number, article_id: number}) => {
+    try {
+        const articlePrisma = await database.article.update({
+            data: {
+                employees: {connect: {employee_id: employee_id}}
+            },
+            where: {
+                article_id: article_id
+            }
+        })
+    }
+}*/
+
 const deleteArticle = async ({article_id}: {article_id: number}): Promise<Article> => {
     try {
         const articlePrisma = await database.article.delete({
