@@ -42,7 +42,7 @@ const ArticleOverviewTable: React.FC<Props> = ({articles}: Props) => {
                         {articles.map((article, index) => (
                             <div key={index} className='container mx-auto article-container'>
                                 <h1>Title: <b>{article.title}</b></h1>
-                                <p>published date: </p>
+                                <p>published date: {new Date(article.date_published).toLocaleDateString()}</p>
                                 <p>{article.content}</p>
                                 <table id='relation-table'>
                                     <thead>
@@ -61,7 +61,7 @@ const ArticleOverviewTable: React.FC<Props> = ({articles}: Props) => {
                                         <td>{relation.subject_entity}</td>
                                         <td>{relation.relation_type.type_name}</td>
                                         <td>{relation.object_entity}</td>
-                                        <td>{relation.relation_type.is_unique.valueOf()}</td>
+                                        <td>{String(relation.relation_type.is_unique)}</td>
                                         <td><button>update</button></td>
                                         <td><button onClick={(event) => removeRelation(relation.relation_id)}>delete</button></td>
                                     </tr>
