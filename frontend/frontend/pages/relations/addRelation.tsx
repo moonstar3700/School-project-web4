@@ -9,6 +9,7 @@ type Props = {
 
 const AddRelationForm: React.FC<Props> = (article_id: Props) => {
 
+
     const [isUnique, setIsUnique] = useState<boolean>(false);
     const [subjectInput, setSubjectInput] = useState<string>('');
     const [typeInput, setTypeInput] = useState<string>('');
@@ -46,6 +47,7 @@ const AddRelationForm: React.FC<Props> = (article_id: Props) => {
                 <label> is unique</label>
                 <input type="checkbox"
                 checked = {isUnique}
+                onChange={() => setIsUnique(!isUnique)}
                  />
                 
                 <label>content</label>
