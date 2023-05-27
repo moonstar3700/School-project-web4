@@ -1,9 +1,9 @@
 const getAllArticles = () => {
-    return fetch(process.env.NEXT_PUBLIC_API_URL+'/article')
-}
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/article');
+};
 
 const ArticleService = {
-    getAllArticles
-}
+    getAllArticles,
+};
 
-export default ArticleService
+export default ArticleService;

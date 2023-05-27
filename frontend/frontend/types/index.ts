@@ -1,13 +1,12 @@
-
-export interface Employee{
-    employee_id : number;
+export interface Employee {
+    employee_id: number;
     name: string;
     password: string;
     email: string;
     articles: Array<Article> | null;
 }
 
-export interface Article{
+export interface Article {
     article_id: number;
     title: string;
     content: string;
@@ -15,14 +14,15 @@ export interface Article{
     relations: Array<Relation> | null;
 }
 
-export interface Relation{
+export interface Relation {
     relation_id: number;
     subject_entity: string;
+    sentence: string;
     object_entity: string;
     relation_type: Relation_type;
 }
 
-export interface Relation_type{
+export interface Relation_type {
     type_id: number;
     type_name: string;
     is_unique: boolean;

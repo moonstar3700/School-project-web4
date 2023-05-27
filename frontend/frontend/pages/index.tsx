@@ -1,13 +1,14 @@
-import Head from "next/head"
-import Header from "@/components/header"
-import Articles from "./articles"
+import Head from 'next/head';
+import Header from '@/components/header';
+import Articles from './articles';
+import Footer from './footer';
+import Example from './about';
 import { ReactSession } from 'react-client-session';
-import LoginForm from "./login";
+import LoginForm from './login';
 
 export default function Home() {
-  
-  //var user = ReactSession.get("user");
-  /*var user = sessionStorage.getItem("user")
+    //var user = ReactSession.get("user");
+    /*var user = sessionStorage.getItem("user")
   console.log(user)
   if (user == null) {
     return (
@@ -20,19 +21,19 @@ export default function Home() {
       </>
     )
   }*/
-  
-  return (
-    <>
-      <Head>
-        <title >News Capture</title>
-      </Head>
-      <main>
-        <Header></Header>
 
+    return (
+        <>
+            <Head>
+                <title>News Capture</title>
+            </Head>
+            <main>
+                <Header></Header>
+                <Example></Example>
+                <Articles></Articles>
 
-        <Articles></Articles>
-      </main>
-
-    </>
-  )
+                <Footer></Footer>
+            </main>
+        </>
+    );
 }

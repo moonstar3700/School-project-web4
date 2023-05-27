@@ -19,6 +19,7 @@ model Relation_type{
 
 model Relation{
   relation_id       Int     @id @default(autoincrement())
+  sentence          String
   subject_entity    String
   object_entity     String
   relation_type     Relation_type   @relation(fields: [relation_type_id], references: [type_id])
