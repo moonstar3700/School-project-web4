@@ -5,14 +5,16 @@ import { relative } from 'path';
 import { useState, useEffect } from 'react';
 import EmployeeService from '@/services/authService';
 import { parseArgs } from 'util';
+import { ReactSession } from 'react-client-session';
 
-const LoginForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
     const [emailInput, setEmailInput] = useState<string>('');
     const [passwordInput, setPasswordInput] = useState<string>('');
+    const [nameInput, setNameInput] = useState<string>('');
 
-    const loginEmployee = async (emailInput: string, passwordInput: string) => {
-        const response = await EmployeeService.login(emailInput, passwordInput).then((res) =>
-            res.json()
+    const registerEmployee = async (emailInput: string, passwordInput: string, name: string) => {
+        const response = await EmployeeService.register(emailInput, passwordInput, name).then(
+            (res) => res.json()
         );
         if (response.token) {
             sessionStorage.setItem('token', response.token); // set token in session
@@ -23,14 +25,14 @@ const LoginForm: React.FC = () => {
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        loginEmployee(emailInput, passwordInput);
+        registerEmployee(emailInput, passwordInput, nameInput);
     };
 
     return (
         <div className="flex  justify-center items-center  bg-gray-50  h-[100vh]">
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
                 <div className="px-6 py-12 bg-white shadow sm:rounded-lg sm:px-12">
-                    <h3>Login</h3>
+                    <h3>Register</h3>
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label
@@ -73,13 +75,33 @@ const LoginForm: React.FC = () => {
                                 />
                             </div>
                         </div>
+                        <div>
+                            <label
+                                htmlFor="password"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                            >
+                                Name
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    id="name"
+                                    name="name"
+                                    type="name"
+                                    autoComplete="current-name"
+                                    value={nameInput}
+                                    onChange={(event) => setNameInput(event.target.value)}
+                                    required
+                                    className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
 
                         <div>
                             <button
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                login
+                                Register
                             </button>
                         </div>
                     </form>
@@ -89,4 +111,4 @@ const LoginForm: React.FC = () => {
     );
 };
 
-export default LoginForm;
+export default RegisterForm;

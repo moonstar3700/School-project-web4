@@ -1,24 +1,25 @@
-const login = (emailInput: string, passwordInput: string) => {
-    const credentials = {
-        "email": emailInput,
-        "password": passwordInput
-    }
-    
-    console.log(credentials)
-    console.log(JSON.stringify(credentials))
-    
-    return fetch(process.env.NEXT_PUBLIC_API_URL+'/employee/login', { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' },
-        mode: 'cors', 
-        body: JSON.stringify(credentials) 
-      })
+const assignEmployee = async (article_id: number, employeeId: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/employee/asignArticle', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify({ employee_id: employeeId, article_id: article_id }),
+        mode: 'cors',
+    });
+};
+const getEmployeesNotAsigned = async (article_id: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/employee/notAsigned/' + article_id, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+        mode: 'cors',
+    });
+};
 
-}
-
-
-const EmployeeService = {
-    login
-}
-
-export default EmployeeService
+export { assignEmployee, getEmployeesNotAsigned };

@@ -1,0 +1,395 @@
+openapi: 3.0.3
+info:
+    title: Swagger Petstore - OpenAPI 3.0
+    description: |-
+        okidoki
+    version: 1.0.11
+tags:
+    - name: auth
+      description: Everything to authenticate yourself
+    - name: Employee
+      description: Everything about your Pets
+      externalDocs:
+          description: Find out more
+          url: http://swagger.io
+    - name: Article
+      description: Access to Petstore orders
+      externalDocs:
+          description: Find out more about our store
+          url: http://swagger.io
+    - name: Relation
+      description: Operations about user
+paths:
+    /auth/login:
+        post:
+            tags:
+                - auth
+            summary: login as an employee
+            responses:
+                200:
+                    description: Returns all existing Employees
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Employee'
+                500:
+                    description: There was an error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    errorMessage:
+                                        type: string
+                                        description: Something went wrong
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: The email of the employee
+                                password:
+                                    type: string
+                                    description: The password of the employee
+    /auth/register:
+        post:
+            tags:
+                - auth
+            summary: add an employee
+            responses:
+                200:
+                    description: Returns all existing Employees
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Employee'
+                500:
+                    description: There was an error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    errorMessage:
+                                        type: string
+                                        description: Something went wrong
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: The email of the employee
+                                password:
+                                    type: string
+                                    description: The password of the employee
+                                name:
+                                    type: string
+                                    description: The name of the employee
+
+    /employee/asignArticle:
+        post:
+            tags:
+                - Employee
+            summary: assign an employee to an article
+            security:
+                - bearerAuth: [] # Use OAuth with a different scope
+            responses:
+                200:
+                    description: Returns all existing Employees
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Employee'
+                500:
+                    description: There was an error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    errorMessage:
+                                        type: string
+                                        description: Something went wrong
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                employee_id:
+                                    type: number
+                                    description: The email of the employee
+                                article_id:
+                                    type: number
+                                    description: The password of the employee
+
+    /employee/notAsigned/{article_id}:
+        get:
+            tags:
+                - Employee
+            summary: Get an employee by email and password
+            security:
+                - bearerAuth: [] # Use OAuth with a different scope
+            responses:
+                200:
+                    description: Returns all existing relations related to the given article id
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Relation'
+                500:
+                    description: There was an error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    errorMessage:
+                                        type: number
+                                        description: Something went wrong
+        parameters:
+            - in: path
+              name: article_id
+              schema:
+                  type: string
+              required: true
+              description: The id of the article
+
+    /employee:
+        get:
+            tags:
+                - Employee
+            summary: Get all existing employees
+            security:
+                - bearerAuth: [] # Use OAuth with a different scope
+            responses:
+                200:
+                    description: Returns all existing Employees
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Employee'
+                500:
+                    description: There was an error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    errorMessage:
+                                        type: string
+                                        description: Something went wrong
+    /employee/find/{email}/{password}:
+        get:
+            tags:
+                - Employee
+            summary: Get an employee by email and password
+            security:
+                - bearerAuth: [] # Use OAuth with a different scope
+            responses:
+                200:
+                    description: Returns all existing relations related to the given article id
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Relation'
+                500:
+                    description: There was an error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    errorMessage:
+                                        type: string
+                                        description: Something went wrong
+        parameters:
+            - in: path
+              name: email
+              schema:
+                  type: string
+              required: true
+              description: The email of the employee
+            - in: path
+              name: password
+              schema:
+                  type: string
+              required: true
+              description: The password of the employee
+
+    /relation/{id}:
+        get:
+            tags:
+                - Relation
+            summary: Get all relations related to an article
+            security:
+                - bearerAuth: [] # Use OAuth with a different scope
+            parameters:
+                - name: id
+                  in: path
+                  description: Article id
+                  required: true
+                  schema:
+                      type: number
+                      format: int64
+                      default: 99
+
+            responses:
+                200:
+                    description: Returns all existing relations related to the given article id
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Relation'
+                500:
+                    description: There was an error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    errorMessage:
+                                        type: string
+                                        description: Something went wrong
+    /relation/add:
+        post:
+            tags:
+                - Relation
+            summary: Adds a relation to an article
+            security:
+                - bearerAuth: [] # Use OAuth with a different scope
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                id:
+                                    type: number
+                                subject:
+                                    type: string
+                                object:
+                                    type: string
+                                type:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                        unique:
+                                            type: boolean
+                        examples:
+                            test:
+                                summary: adds a relation
+                                value:
+                                    article_id: 1
+                                    subject: I
+                                    object: eat cake
+                                    sentence: I love to eat cake
+                                    type:
+                                        name: love
+                                        unique: false
+            responses:
+                200:
+                    description: Adds a relation to the article with the given id
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Relation'
+
+    /relation/delete/{id}:
+        delete:
+            tags:
+                - Relation
+            summary: delete a relation
+            security:
+                - bearerAuth: [] # Use OAuth with a different scope
+            parameters:
+                - name: id
+                  in: path
+                  description: relation id
+                  required: true
+                  schema:
+                      type: number
+                      format: int64
+                      default: 99
+
+            responses:
+                200:
+                    description: Returns all existing relations related to the given article id
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Relation'
+                500:
+                    description: There was an error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    errorMessage:
+                                        type: string
+                                        description: Something went wrong
+
+components:
+    schemas:
+        Relation_type:
+            type: object
+            properties:
+                type_id:
+                    type: number
+                    format: int64
+                type_name:
+                    type: string
+                    description: The action of a relation
+                is_unique:
+                    type: boolean
+                    description: Indication whether the type is unique or not
+        Relation:
+            type: object
+            properties:
+                relation_id:
+                    type: number
+                    format: int64
+                subject_entity:
+                    type: string
+                    description: The subject of the relation.
+                object_entity:
+                    type: string
+                    description: The object of the relation
+                relation_type:
+                    $ref: '#/components/schemas/Relation_type'
+                    description: The action in a relation
+                sentence:
+                    type: string
+                    description: The sentence in which the relation is found
+        Employee:
+            type: object
+            properties:
+                employee_id:
+                    type: number
+                    format: int64
+                name:
+                    type: string
+                    description: The name of the employee
+                password:
+                    type: string
+                    description: The password of the employee
+                email:
+                    type: string
+                    description: The email of the employee
+
+    securitySchemes:
+        bearerAuth: # arbitrary name for the security scheme
+            type: http
+            scheme: bearer
+            bearerFormat: JWT # optional, arbitrary value for documentation purposes

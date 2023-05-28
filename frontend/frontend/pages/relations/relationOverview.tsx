@@ -48,7 +48,7 @@ const RelationOverviewTable: React.FC<Props> = ({ article }: Props) => {
             ) : (
                 ''
             )}
-            <div className="inline-block min-w-full align-middle sm:px-6 lg:px-8">
+            <div className="inline-block min-w-full align-middle">
                 <table className="min-w-full divide-y divide-gray-300">
                     <thead>
                         <tr>

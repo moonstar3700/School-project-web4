@@ -7,8 +7,10 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useState, Fragment, useEffect, use } from 'react';
 import AddRelationForm from '../relations/addRelation';
 import RelationOverviewTable from '../relations/relationOverview';
+import { getEmployeesNotAsigned, assignEmployee } from '../../services/employeeService';
 import Pagination from '../pagination';
 import AddRelation from '../form/AddRelation';
+import Select from 'react-select';
 import { on } from 'events';
 type Props = {
     articles: Array<Article>;
@@ -18,7 +20,38 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
     const [page, setPage] = useState<number>(0);
     const currenArticle = articles[page];
     const [addRelationOpen, setAddRelationOpen] = useState<boolean>(false);
+    const [options, setOptions] = useState<any>([]);
+    const [optionsLoading, setOptionsLoading] = useState<boolean>(true);
 
+    useEffect(() => {
+        loadOptions();
+    }, [currenArticle]);
+
+    const loadOptions = async () => {
+        if (!currenArticle) return;
+        const empoloyees = await getEmployeesNotAsigned(currenArticle.article_id).then(
+            (response) => {
+                return response.json();
+            }
+        );
+        const options = empoloyees.map((employee: { employee_id: string; name: string }) => {
+            return {
+                value: employee.employee_id,
+                label: employee.name,
+            };
+        });
+        setOptions(options);
+        setOptionsLoading(false);
+    };
+
+    const onAssign = (value: any) => {
+        console.log(value);
+        // loop over all selected values and assign them
+
+        assignEmployee(currenArticle.article_id, value.value).then((response) => {
+            loadOptions();
+        });
+    };
     const onOpenAddArticle = () => {
         setAddRelationOpen(true);
     };
@@ -54,7 +87,16 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
                                         ).toLocaleDateString()}
                                     </p>
                                 </div>
-                                <div className="flex justify-center mr-2 sm:flex-none">
+                                <div className="flex justify-between w-1/2 ">
+                                    <div className="flex items-center gap-x-2">
+                                        <label>Assigned To:</label>
+                                        <Select
+                                            className="w-36"
+                                            options={options}
+                                            isSearchable={true}
+                                            onChange={onAssign}
+                                        />
+                                    </div>
                                     <button
                                         onClick={onOpenAddArticle}
                                         type="button"
