@@ -3,7 +3,7 @@ import React from 'react';
 import RelationService from '@/services/relationService';
 import { relative } from 'path';
 import { useState, useEffect } from 'react';
-import UpdateRelation from '../form/UpdateRelation';
+import UpdateRelation from '../forms/UpdateRelation';
 import ConfirmDelete from '../relations/deleteRelation';
 import { on } from 'events';
 type Props = {

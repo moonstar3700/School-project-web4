@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import Header from '@/components/header';
-import Articles from './articles';
-import Footer from './footer';
-import Example from './about';
+import Articles from '../components/articles';
+import Footer from '../components/footer';
+import Example from '../components/about';
 import { ReactSession } from 'react-client-session';
 import LoginForm from './login';
 

@@ -9,7 +9,7 @@ import AddRelationForm from '../relations/addRelation';
 import RelationOverviewTable from '../relations/relationOverview';
 import { getEmployeesNotAsigned, assignEmployee } from '../../services/employeeService';
 import Pagination from '../pagination';
-import AddRelation from '../form/AddRelation';
+import AddRelation from '../forms/AddRelation';
 import Select from 'react-select';
 import classNames from 'classnames';
 import { on } from 'events';
@@ -32,7 +32,7 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
 
     useEffect(() => {
         const userName = sessionStorage.getItem('name');
-        const isAdmin = !((sessionStorage.getItem('role') as string).toLowerCase() === 'admin');
+        const isAdmin = !((sessionStorage.getItem('role') as string)?.toLowerCase() === 'admin');
         console.log(isAdmin);
         console.log(sessionStorage.getItem('role'));
         setUserName(userName || '');
