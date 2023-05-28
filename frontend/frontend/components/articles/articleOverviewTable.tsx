@@ -25,6 +25,7 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
     const [optionsLoading, setOptionsLoading] = useState<boolean>(true);
     const [userName, setUserName] = useState<string>('');
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
         loadOptions();
@@ -32,9 +33,9 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
 
     useEffect(() => {
         const userName = sessionStorage.getItem('name');
+        const isLoggedIn = sessionStorage.getItem('name') !== null;
         const isAdmin = !((sessionStorage.getItem('role') as string)?.toLowerCase() === 'admin');
-        console.log(isAdmin);
-        console.log(sessionStorage.getItem('role'));
+        setIsLoggedIn(isLoggedIn);
         setUserName(userName || '');
         setIsAdmin(isAdmin);
     }, []);
@@ -73,87 +74,91 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
     console.log(currenArticle?.article_id);
 
     return (
-        <div className="px-6 pb-32 mx-auto max-w-7xl pt-36 sm:pt-60 lg:px-8 lg:pt-32">
-            {currenArticle?.article_id && addRelationOpen ? (
-                <AddRelation
-                    article_id={currenArticle.article_id}
-                    onClose={onCloseAddArticle}
-                ></AddRelation>
-            ) : (
-                ''
-            )}
+        <>
+            {isLoggedIn && (
+                <div className="px-6 pb-32 mx-auto max-w-7xl pt-36 sm:pt-60 lg:px-8 lg:pt-32">
+                    {currenArticle?.article_id && addRelationOpen ? (
+                        <AddRelation
+                            article_id={currenArticle.article_id}
+                            onClose={onCloseAddArticle}
+                        ></AddRelation>
+                    ) : (
+                        ''
+                    )}
 
-            <h1 className="mb-12 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Welcome {userName}
-            </h1>
-            {currenArticle ? (
-                <>
-                    {
-                        <div className="px-6 py-10 mt-20 mb-16 border rounded-md ">
-                            <div className="justify-center w-full sm:flex sm:items-center">
-                                <div className="mt-4 sm:mt-0 sm:flex-auto">
-                                    <p className="text-sm text-gray-700 ">
-                                        published date: <br />
-                                        {new Date(
-                                            currenArticle.date_published
-                                        ).toLocaleDateString()}
-                                    </p>
-                                </div>
-                                <div className="flex justify-between w-1/2 ">
-                                    <button
-                                        onClick={onOpenAddArticle}
-                                        type="button"
-                                        className="block px-3 py-2 text-sm font-semibold text-center text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                    >
-                                        Add Relation
-                                    </button>
-
-                                    <div
-                                        className={classNames(
-                                            'flex items-center gap-x-2',
-                                            isAdmin && 'hidden'
-                                        )}
-                                    >
-                                        <label>Assigned To:</label>
-
-                                        <div style={{}}>
-                                            <Select
-                                                isDisabled={addRelationOpen}
-                                                isLoading={optionsLoading}
-                                                options={options}
-                                                isSearchable={true}
-                                                onChange={onAssign}
-                                            />
+                    <h1 className="mb-12 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                        Welcome {userName}
+                    </h1>
+                    {currenArticle ? (
+                        <>
+                            {
+                                <div className="px-6 py-10 mt-20 mb-16 border rounded-md ">
+                                    <div className="justify-center w-full sm:flex sm:items-center">
+                                        <div className="mt-4 sm:mt-0 sm:flex-auto">
+                                            <p className="text-sm text-gray-700 ">
+                                                published date: <br />
+                                                {new Date(
+                                                    currenArticle.date_published
+                                                ).toLocaleDateString()}
+                                            </p>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex mt-10 h-96">
-                                <div className="w-1/2 max-w-2xl mx-auto overflow-auto lg:mx-0 lg:max-w-none">
-                                    <h2 className="font-bold tracking-tight text-gray-900 sm:text-3xl">
-                                        {currenArticle.title}
-                                    </h2>
-                                    <div className="flex flex-col gap-x-8 gap-y-20 lg:flex-row">
-                                        <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
-                                            <div className="max-w-xl mt-4 text-base leading-7 text-gray-700">
-                                                <p>{currenArticle.content}</p>
+                                        <div className="flex justify-between w-1/2 ">
+                                            <button
+                                                onClick={onOpenAddArticle}
+                                                type="button"
+                                                className="block px-3 py-2 text-sm font-semibold text-center text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            >
+                                                Add Relation
+                                            </button>
+
+                                            <div
+                                                className={classNames(
+                                                    'flex items-center gap-x-2',
+                                                    isAdmin && 'hidden'
+                                                )}
+                                            >
+                                                <label>Assigned To:</label>
+
+                                                <div style={{}}>
+                                                    <Select
+                                                        isDisabled={addRelationOpen}
+                                                        isLoading={optionsLoading}
+                                                        options={options}
+                                                        isSearchable={true}
+                                                        onChange={onAssign}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="lg:flex lg:flex-auto lg:justify-center"></div>
+                                    </div>
+                                    <div className="flex mt-10 h-96">
+                                        <div className="w-1/2 max-w-2xl mx-auto overflow-auto lg:mx-0 lg:max-w-none">
+                                            <h2 className="font-bold tracking-tight text-gray-900 sm:text-3xl">
+                                                {currenArticle.title}
+                                            </h2>
+                                            <div className="flex flex-col gap-x-8 gap-y-20 lg:flex-row">
+                                                <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
+                                                    <div className="max-w-xl mt-4 text-base leading-7 text-gray-700">
+                                                        <p>{currenArticle.content}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="lg:flex lg:flex-auto lg:justify-center"></div>
+                                            </div>
+                                        </div>
+                                        <div className="w-1/2 overflow-auto">
+                                            <RelationOverviewTable article={currenArticle} />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="w-1/2 overflow-auto">
-                                    <RelationOverviewTable article={currenArticle} />
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </>
-            ) : (
-                <p>No artciles to show</p>
+                            }
+                        </>
+                    ) : (
+                        <p>No artciles to show</p>
+                    )}
+                    <Pagination page={page} setPage={setPage} totalPages={articles.length} />
+                </div>
             )}
-            <Pagination page={page} setPage={setPage} totalPages={articles.length} />
-        </div>
+        </>
     );
 };
 
