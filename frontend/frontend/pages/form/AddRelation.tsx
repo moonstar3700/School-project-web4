@@ -31,8 +31,9 @@ const AddRelationForm: React.FC<Props> = ({ onClose, article_id }: Props) => {
         is_unique: boolean
     ) => {
         console.log(subject, sentence, object, type, is_unique);
+        let response_message = 'Something went wrong';
         try {
-            await RelationService.addRelation(
+            const response = await RelationService.addRelation(
                 article_id,
                 sentence,
                 subject,
@@ -40,11 +41,18 @@ const AddRelationForm: React.FC<Props> = ({ onClose, article_id }: Props) => {
                 object,
                 is_unique
             );
-            onClose();
+            if (response.status === 200) {
+                onClose();
+            }
+            response_message = await response.json().then((data) => {
+                console.log(data);
+                return data.errorMessage;
+            });
         } catch (error: any) {
-            console.log(error.response.data.errorMessage);
+            response_message = await error.response.data.errorMessage;
         } finally {
         }
+        return response_message;
     };
     return <RelationForm onClose={onClose} handleSubmit={addRelationFunction} />;
 };

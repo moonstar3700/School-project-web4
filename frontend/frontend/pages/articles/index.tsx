@@ -15,7 +15,10 @@ const Articles: React.FC = () => {
     };
 
     useEffect(() => {
-        getArticles();
+        const interval = setInterval(() => {
+            getArticles();
+        }, 1000);
+        return () => clearInterval(interval);
     }, []);
 
     return (

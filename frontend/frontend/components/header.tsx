@@ -2,15 +2,15 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 
 const Header: React.FC = () => {
-    const [currentUser, setCurrentUser] = React.useState<any>(null);
+    const [isLoggedIn, setIsLoggedIn] = React.useState<any>(false);
 
     useEffect(() => {
-        const user = sessionStorage.getItem('employee');
-        setCurrentUser(user);
+        const isLoggedIn = sessionStorage.getItem('name') ? true : false;
+        setIsLoggedIn(isLoggedIn);
     }, []);
 
     const logout = () => {
-        sessionStorage.removeItem('employee');
+        sessionStorage.removeItem('name');
         sessionStorage.removeItem('token');
         window.location.href = '/';
     };
@@ -21,7 +21,7 @@ const Header: React.FC = () => {
                     News <span id="title">Capture</span>{' '}
                 </a>
                 <div className="flex mt-3 sm:ml-4 sm:mt-0">
-                    {currentUser ? (
+                    {isLoggedIn ? (
                         <a
                             onClick={logout}
                             type="button"

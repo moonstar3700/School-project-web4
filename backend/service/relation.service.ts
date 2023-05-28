@@ -32,24 +32,28 @@ const createRelation = async ({
     is_unique: boolean;
     article_id: number;
 }): Promise<Relation> => {
+    if (articleDB.findArticle({ article_id }) === null) {
+        throw new Error('Corresponding article does not exist');
+    }
+    const errors = [];
     if (!type_name || type_name === undefined) {
-        throw new Error('type name is invalid');
+        errors.push('type name is invalid');
     }
     if (is_unique === undefined) {
-        throw new Error('is unique is invalid');
+        errors.push('is unique is invalid');
     }
     if (!subject_entity || !subject_entity.trim()) {
-        subject_entity = '/';
+        errors.push('subject entity is invalid');
+    }
+    if (!sentence || !sentence.trim()) {
+        errors.push('sentence is invalid');
     }
     if (!object_entity || !object_entity.trim()) {
         object_entity = '/';
     }
-    if (!type_name || !type_name.trim()) {
-        type_name = '/';
-    }
 
-    if (articleDB.findArticle({ article_id }) === null) {
-        throw new Error('Corresponding article does not exist');
+    if (errors.length > 0) {
+        throw new Error(errors.join(' AND '));
     }
 
     let relation_type = await relation_typeDb.findType({ type_name, is_unique });
@@ -68,38 +72,42 @@ const createRelation = async ({
 // adjust relation
 const updateRelation = async ({
     relation_id,
+    sentence,
     subject_entity,
     object_entity,
     type_name,
     is_unique,
 }: {
     relation_id: number;
+    sentence: string;
     subject_entity: string;
     object_entity: string;
     type_name: string;
     is_unique: boolean;
 }): Promise<Relation> => {
-    if (!relation_id || relation_id === undefined) {
-        throw new Error('relation id is invalid');
+    const relationExists = await relationDB.findRelation({ relation_id });
+    if (!relationExists) {
+        throw new Error('relation does not exist');
     }
+    const errors = [];
     if (!type_name || type_name === undefined) {
-        throw new Error('type name is invalid');
+        errors.push('type name is invalid');
     }
     if (is_unique === undefined) {
-        throw new Error('is unique is invalid');
+        errors.push('is unique is invalid');
+    }
+    if (!sentence || !sentence.trim()) {
+        errors.push('sentence is invalid');
     }
     if (!subject_entity || !subject_entity.trim()) {
-        subject_entity = '/';
+        errors.push('subject entity is invalid');
     }
     if (!object_entity || !object_entity.trim()) {
         object_entity = '/';
     }
-    if (!type_name || !type_name.trim()) {
-        type_name = '/';
-    }
-    const relationExists = await relationDB.findRelation({ relation_id });
-    if (!relationExists) {
-        throw new Error('relation does not exist');
+
+    if (errors.length > 0) {
+        throw new Error(errors.join(' AND '));
     }
 
     // check to see if article with id exists
@@ -111,6 +119,7 @@ const updateRelation = async ({
     const relation_type_id = relation_type.get_id;
     const relation = await relationDB.updateRelationAll({
         relation_id,
+        sentence,
         subject_entity,
         object_entity,
         relation_type_id,

@@ -18,7 +18,8 @@ const RegisterForm: React.FC = () => {
         );
         if (response.token) {
             sessionStorage.setItem('token', response.token); // set token in session
-            sessionStorage.setItem('employee', response.employee);
+            sessionStorage.setItem('name', response.name);
+            sessionStorage.setItem('role', response.role);
             window.location.href = '/';
         }
     };

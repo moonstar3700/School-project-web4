@@ -1,7 +1,13 @@
 const deleteRelation = (id: number) => {
+    // get token from session storage
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + `/relation/delete/${id}`, {
         method: 'DELETE',
         mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
     });
 };
 
@@ -25,11 +31,15 @@ const addRelation = (
         },
     };
 
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + `/relation/add`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         mode: 'cors',
         body: JSON.stringify(jsonData),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
     });
 };
 
@@ -42,6 +52,7 @@ const updateRelation = (
     is_unique: boolean
 ) => {
     console.log('update relation function');
+    const token = sessionStorage.getItem('token');
     const jsonData = {
         sentence: sentence,
         id: relation_id,
@@ -55,7 +66,7 @@ const updateRelation = (
 
     return fetch(process.env.NEXT_PUBLIC_API_URL + `/relation/update`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
         mode: 'cors',
         body: JSON.stringify(jsonData),
     });

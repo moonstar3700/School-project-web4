@@ -4,13 +4,14 @@ import { Article, Relation, Relation_type } from '../../types';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { useState, Fragment, useEffect, use } from 'react';
+import React, { useState, Fragment, useEffect, use } from 'react';
 import AddRelationForm from '../relations/addRelation';
 import RelationOverviewTable from '../relations/relationOverview';
 import { getEmployeesNotAsigned, assignEmployee } from '../../services/employeeService';
 import Pagination from '../pagination';
 import AddRelation from '../form/AddRelation';
 import Select from 'react-select';
+import classNames from 'classnames';
 import { on } from 'events';
 type Props = {
     articles: Array<Article>;
@@ -22,10 +23,21 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
     const [addRelationOpen, setAddRelationOpen] = useState<boolean>(false);
     const [options, setOptions] = useState<any>([]);
     const [optionsLoading, setOptionsLoading] = useState<boolean>(true);
+    const [userName, setUserName] = useState<string>('');
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
     useEffect(() => {
         loadOptions();
     }, [currenArticle]);
+
+    useEffect(() => {
+        const userName = sessionStorage.getItem('name');
+        const isAdmin = !((sessionStorage.getItem('role') as string).toLowerCase() === 'admin');
+        console.log(isAdmin);
+        console.log(sessionStorage.getItem('role'));
+        setUserName(userName || '');
+        setIsAdmin(isAdmin);
+    }, []);
 
     const loadOptions = async () => {
         if (!currenArticle) return;
@@ -72,7 +84,7 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
             )}
 
             <h1 className="mb-12 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Processed Articles
+                Welcome {userName}
             </h1>
             {currenArticle ? (
                 <>
@@ -88,15 +100,6 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
                                     </p>
                                 </div>
                                 <div className="flex justify-between w-1/2 ">
-                                    <div className="flex items-center gap-x-2">
-                                        <label>Assigned To:</label>
-                                        <Select
-                                            className="w-36"
-                                            options={options}
-                                            isSearchable={true}
-                                            onChange={onAssign}
-                                        />
-                                    </div>
                                     <button
                                         onClick={onOpenAddArticle}
                                         type="button"
@@ -104,6 +107,25 @@ const ArticleOverviewTable: React.FC<Props> = ({ articles }: Props) => {
                                     >
                                         Add Relation
                                     </button>
+
+                                    <div
+                                        className={classNames(
+                                            'flex items-center gap-x-2',
+                                            isAdmin && 'hidden'
+                                        )}
+                                    >
+                                        <label>Assigned To:</label>
+
+                                        <div style={{}}>
+                                            <Select
+                                                isDisabled={addRelationOpen}
+                                                isLoading={optionsLoading}
+                                                options={options}
+                                                isSearchable={true}
+                                                onChange={onAssign}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex mt-10 h-96">

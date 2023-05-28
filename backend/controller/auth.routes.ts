@@ -16,10 +16,13 @@ authRouter.post('/login', async (req: Request, res: Response) => {
         });
 
         const token = authService.generateJwtToken(employee.get_email);
+        console.log(token, employee.get_name, employee.get_role);
+
         res.status(200).json({
             message: 'authenticated successfully',
             token: token,
-            employee: employee.get_name,
+            name: employee.get_name,
+            role: employee.get_role,
         });
     } catch (error) {
         res.status(500).json({ status: 'error', errorMessage: error.message });
@@ -36,7 +39,8 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
         res.status(200).json({
             message: 'authenticated successfully',
             token: token,
-            employee: employee.get_name,
+            name: employee.get_name,
+            role: employee.get_role,
         });
     } catch (error) {
         res.status(500).json({ status: 'error', errorMessage: error.message });

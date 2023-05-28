@@ -21,11 +21,10 @@ body {
     background: linear-gradient( to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }*/
 
-
 /*header*/
 
 #title {
-    color: dodgerblue
+    color: dodgerblue;
 }
 
 .header {
@@ -37,9 +36,7 @@ body {
     padding-left: 5rem;
 }
 
-
 /*end header*/
-
 
 /*article overview*/
 #article-overview {
@@ -66,7 +63,6 @@ body {
     border-bottom: solid black 2px;
 }
 
-
 #relation-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
@@ -79,8 +75,6 @@ body {
 /* end relation table*/
 
 /* relation forms */
-
-
 
 /* end relation forms*/
 

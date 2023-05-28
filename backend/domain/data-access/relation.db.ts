@@ -113,11 +113,13 @@ const findRelation = async ({ relation_id }: { relation_id: number }): Promise<R
 
 const updateRelationAll = async ({
     relation_id,
+    sentence,
     subject_entity,
     object_entity,
     relation_type_id,
 }: {
     relation_id: number;
+    sentence: string;
     subject_entity: string;
     object_entity: string;
     relation_type_id: number;
@@ -128,6 +130,7 @@ const updateRelationAll = async ({
                 relation_id: relation_id,
             },
             data: {
+                sentence: sentence,
                 subject_entity: subject_entity,
                 object_entity: object_entity,
                 relation_type_id: relation_type_id,

@@ -13,9 +13,9 @@ const database = new PrismaClient();
 let currentid = 0;
 
 const employees: Employee[] = [
-    Employee.create(currentid++, 'user', 't', 'test@mail.com'),
-    Employee.create(currentid++, 'user2', 't', 'test2@mail.com'),
-    Employee.create(currentid++, 'user3', 't', 'test3@mail.com'),
+    Employee.create(currentid++, 'WORKER', 'user', 't', 'test@mail.com'),
+    Employee.create(currentid++, 'WORKER', 'user2', 't', 'test2@mail.com'),
+    Employee.create(currentid++, 'WORKER', 'user3', 't', 'test3@mail.com'),
 ];
 
 let employeeslength: number = employees.length;
@@ -188,7 +188,7 @@ const getEmployeesWithEmailPass1 = ({
     email: string;
     password: string;
 }): Employee => {
-    return Employee.create(currentid++, 'login', 't', 'logintest@mail.com');
+    return Employee.create(currentid++, 'WORKER', 'login', 't', 'logintest@mail.com');
 };
 
 const createEmployee1 = ({
@@ -200,7 +200,7 @@ const createEmployee1 = ({
     password: string;
     email: string;
 }): Employee => {
-    return Employee.create(currentid++, 'new', 't', 'newtest@mail.com');
+    return Employee.create(currentid++, 'WORKER', 'new', 't', 'newtest@mail.com');
 };
 
 export default {
