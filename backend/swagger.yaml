@@ -136,16 +136,16 @@ paths:
         get:
             tags:
                 - Employee
-            summary: Get an employee by email and password
+            summary: Get all employees who have not been added asigned with to the following article
             security:
                 - bearerAuth: [] # Use OAuth with a different scope
             responses:
                 200:
-                    description: Returns all existing relations related to the given article id
+                    description: Returns all employees that are not asigned to the article in question
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Relation'
+                                $ref: '#/components/schemas/Employee'
                 500:
                     description: There was an error
                     content:
@@ -226,6 +226,7 @@ paths:
               required: true
               description: The password of the employee
 
+    
     /relation/{id}:
         get:
             tags:
@@ -260,6 +261,43 @@ paths:
                                     errorMessage:
                                         type: string
                                         description: Something went wrong
+    
+    /article/add:
+        post:
+            tags:
+                - Article
+            summary: Adds an article
+            security:
+                - bearerAuth: [] # Use OAuth with a different scope
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                title:
+                                    type: string
+                                content:
+                                    type: string
+                                employee_id:
+                                    type: number
+                              
+                        examples:
+                            test:
+                                summary: adds a relation
+                                value:
+                                    title: Swagger test
+                                    content: lorem test
+                                    employee_id: 1
+            responses:
+                200:
+                    description: Adds an article connected to an employee
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Article'
+    
+    
     /relation/add:
         post:
             tags:
@@ -354,6 +392,23 @@ components:
                 is_unique:
                     type: boolean
                     description: Indication whether the type is unique or not
+        Article:
+            type: object
+            properties:
+                article_id:
+                    type: number
+                    format: int64
+                title:
+                    type: string
+                    description: the title of the article.
+                content:
+                    type: string
+                    description: the content of the article.
+                date_published:
+                    type: string
+                    description: the date on which the article was published
+                
+        
         Relation:
             type: object
             properties:
