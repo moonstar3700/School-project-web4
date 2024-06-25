@@ -132,12 +132,12 @@ export default function Example() {
                                     <p className="relative mt-12 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
                                         Dit project is een beetje ongewoon, maar ik raad je aan het
                                         project te seeden zodat je dezelfde waardes hebt als ik. En
-                                        vervolgens de link eens te bekijken:
+                                        vervolgens de link eens te bekijken: 
                                         <a
                                             className="text-blue-600 hover:underline"
                                             href="https://www.ibm.com/demos/live/natural-language-understanding/self-service/home"
                                         >
-                                            LINK NAAR IBM NLU
+                                            LINK NAAR IBM NLU 
                                         </a>
                                         IBM NLU maakt vaak fouten wanneer hij zinnen parsed. Deze
                                         applicatie is gemaakt zodat mensen nog eens de parsed tekst
